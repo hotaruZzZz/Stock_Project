@@ -95,6 +95,6 @@ plt.legend(handles=[c,o], loc='best')
 plt.xticks(rotation=45)
 plt.title(code,fontproperties="SimSun")
 plt.show()
-print(stock['close'])
+
 
 
