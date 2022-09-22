@@ -1,0 +1,18 @@
+
+    {% extends "base.html" %}
+    {% block title %} 股票查詢 {% endblock %}
+    {% block content%}
+    輸入股票代號: <input id="input1" type="text">
+    <button>submit</button>
+    {% for vlist in stock_list %}
+    <h1> {{vlist.sName }} </h1>
+    <ul>
+        <li>股票代號 : {{ vlist.store_name }}</li>
+        <li>日期 : {{ vlist.sDate }}</li>
+        <li>開盤 : {{ vlist.sOpen }}</li>
+        <li>最高 : {{ vlist.sHigh }}</li>
+        <li>最低 : {{ vlist.sLow }}</li>
+        <li>收盤 : {{ vlist.sClose }}</li>
+    </ul>
+    {% endfor %}
+{% endblock %}

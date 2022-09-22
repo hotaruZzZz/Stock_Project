@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content%}
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label>股票名稱：</label>
+        <input type="text" id="sName" name="sNmae" value="{{stock_data.sName}}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label>股票代號：</label>
+        <input type="text" id="sNumber" name="sNumber" value="{{stock_data.sNumber}}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label>日期：</label>
+        <input type="text" id="sDate" name="sDate" value="{{stock_data.sDate}}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label>開盤：</label>
+        <input type="text" id="sOpen" name="sOpen" value="{{stock_data.sOpen}}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label>最高：</label>
+        <input type="text" id="sHigh" name="sHigh" value="{{stock_data.sHigh}}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label>最低：</label>
+        <input type="text" id="sLow" name="sLow" value="{{stock_data.sLow}}" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label>收盤：</label>
+        <input type="text" id="sClose" name="sClose" value="{{stock_data.sClose}}" class="form-control">
+    </div>
+    <a href="{% url 'Query' %}" class="btn btn-warning">取消</a>
+    <input type="submit" class="btn btn-primary" value="修改"/>
+</form>
+
+
+{% endblock %}

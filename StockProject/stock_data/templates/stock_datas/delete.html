@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h3>是否確定刪除 {{stock_data.sDate}} {{ stock_data.sName }}?</h3>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <input type="submit" class="btn btn-success" value="確定">
+    <a href="{% url 'Query' %}" class="btn btn-warning">取消</a>
+</form>
+
+{% endblock  %}
