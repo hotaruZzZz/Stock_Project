@@ -2,19 +2,22 @@ import studen_deep_linear
 import numpy as np
 import pandas as pd
 from datetime import datetime
+import matplotlib.pyplot as plt
 
 #pd.read_csv(data_name => 檔案名稱 ,usecols = [] => 選取指定列, nrows => 幾筆資料)
+#tech_every_day3裡面目前有1943個不同ID，想查詢的話請找另外製作的ID表
 data = (pd.read_csv("tech_every_day3.csv")
-        [lambda x: x['stock_id'] == 15 ]     #lambda x:x*x為密名函示 , 類似 def a(x): return x*x
+       [lambda x: x['stock_id'] == 6201 ]     #lambda x:x*x為密名函示 , 類似 def a(x): return x*x
         )
 new_data = data[~(data['mean5'].isnull())]        #選取在mean5標籤下並非NaN值
 mean5_data = new_data["mean5"]
 time_data = new_data["date"]
-n_days = len(new_data)
+n_days = len(new_data)  
 X_X = mean5_data.values
 np_time_data = time_data.values
 number_time_data = []
 y_date = []
+n = 30 #幾天為一筆
 #將存在np_time_data裡面的字串時間轉換為datetime，以方便後續轉換數字
 for i in np_time_data:
     a = str(i)
@@ -26,19 +29,39 @@ for i in range(n_days):
     total = ((number_time_data[i].year-first_year)*365
            + studen_deep_linear.Date_converts_list(number_time_data[i]) 
            + number_time_data[i].day) 
-    y_date.insert(0,total)  
+    y_date.append(total)  
 Y_Y = np.array(y_date).reshape(n_days , 1)
+X_X = X_X.reshape(n_days , 1)
 #Y_Y => 日期
 #X_X => 當日往後五天平均
-#開始訓練
-model = studen_deep_linear.studen_start_linear(Y_Y , X_X)
-XX , YY , ss , pp = studen_deep_linear.studen_deep_suggest(Y_Y , X_X , n_days)
 
-n = 20
-from sklearn.preprocessing import PolynomialFeatures
-poly_features = PolynomialFeatures(degree = n, include_bias=False)
-train_X_expanded = poly_features.fit_transform(np.arange(2000,2250).reshape(250,1))
-num = 1
-for i in model.predict(train_X_expanded):
-    print(num, ":" , i)
-    num+=1
+#↑以上，為提取資料，如果模組沒問題的話只要動上半部
+#-------------------------------------------分隔線----------------------------------------------------------
+#↓以下，為訓練預測資料，大概只要改改參數就OK了
+
+#資料標準化
+max_features, min_features = max(X_X), min(X_X)
+X_X = (X_X-min_features)/(max_features-min_features)
+#資料三維處理
+X_train = []
+y_train = []
+for i in range(n, n_days):
+    X_train.append(X_X[i-n:i, 0])
+    y_train.append(X_X[i, 0])
+X_train, y_train = np.array(X_train), np.array(y_train)
+X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
+
+#開始訓練
+model , pred = studen_deep_linear.studen_CNN_LSTM_model(
+    X_train , y_train, epochs = 6 , batch_size = 20 , learning_rate = 0.001
+    )
+X_pred , Y_pred = studen_deep_linear.studen_predict(X_X , Y_Y, n , days = 31)
+
+#轉化為原始檔
+X_X = X_X * (max_features-min_features) + min_features
+pred = pred * (max_features-min_features) + min_features
+X_pred = X_pred * (max_features-min_features) + min_features
+#繪製
+#draw_data(第一個X軸，第一個Y軸，第二個X軸，第二個Y軸，上下間距，範圍開啟，標題)
+studen_deep_linear.draw_data(Y_Y , X_X, Y_pred, X_pred, n, axis = 1 , name = 'data_predict')
+studen_deep_linear.draw_data(Y_Y , X_X, Y_Y[n:] , pred, n, axis = 0 , name = 'data_learing')
