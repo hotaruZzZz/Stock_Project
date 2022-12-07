@@ -17,7 +17,7 @@ X_X = mean5_data.values
 np_time_data = time_data.values
 number_time_data = []
 y_date = []
-n = 30 #幾天為一筆
+
 #將存在np_time_data裡面的字串時間轉換為datetime，以方便後續轉換數字
 for i in np_time_data:
     a = str(i)
@@ -43,6 +43,7 @@ X_X = X_X.reshape(n_days , 1)
 max_features, min_features = max(X_X), min(X_X)
 X_X = (X_X-min_features)/(max_features-min_features)
 #資料三維處理
+n = 30 #幾天為一筆
 X_train = []
 y_train = []
 for i in range(n, n_days):
@@ -56,12 +57,21 @@ model , pred = studen_deep_linear.studen_CNN_LSTM_model(
     X_train , y_train, epochs = 6 , batch_size = 20 , learning_rate = 0.001
     )
 X_pred , Y_pred = studen_deep_linear.studen_predict(X_X , Y_Y, n , days = 31)
-
+new_time_data = np_time_data
+for i in range(31):
+    time_str = new_time_data[len(new_time_data)-1]
+    da = int(time_str[8:])
+    mo = int(time_str[5:7])
+    Ya = int(time_str[:4])
+    new_data = studen_deep_linear.create_data(Ya , mo , da)
+    new_time_data = np.append(new_time_data, np.array([new_data]) , axis = 0)
 #轉化為原始檔
 X_X = X_X * (max_features-min_features) + min_features
 pred = pred * (max_features-min_features) + min_features
 X_pred = X_pred * (max_features-min_features) + min_features
 #繪製
-#draw_data(第一個X軸，第一個Y軸，第二個X軸，第二個Y軸，上下間距，範圍開啟，標題)
-studen_deep_linear.draw_data(Y_Y , X_X, Y_pred, X_pred, n, axis = 1 , name = 'data_predict')
-studen_deep_linear.draw_data(Y_Y , X_X, Y_Y[n:] , pred, n, axis = 0 , name = 'data_learing')
+#draw_data(第一個X軸，第一個Y軸，第二個X軸，第二個Y軸，上下間距，範圍開啟(0為關閉，其他數字都是開啟)，標題)
+studen_deep_linear.draw_data(np_time_data , X_X, new_time_data, X_pred, n, axis = 1 , name = 'data_predict')
+studen_deep_linear.draw_data(np_time_data , X_X, np_time_data[n:] , pred, n, axis = 0 , name = 'data_learing')
+#draw_data_for_date(np_time_data , X_X , 30)
+#Y_pred[len(Y_pred)-n]+3

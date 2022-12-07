@@ -45,18 +45,66 @@ def Date_converts_list(D):  #轉換年月日為第幾天
         elif i == 12:
             total += 31
     return total
-   
+
+def create_data(year , month , day):
+    nex = 30
+    for i in [1,3,5,7,8,10,12]:
+        if i == month:
+            nex = 31 
+            break
+    if month == 2:
+        if year4(year):
+            nex = 29
+        else:
+            nex = 28
+    if day+1 <= nex:
+        day = day + 1
+    else:
+        day = 1
+        if month+1 <= 12:
+            month = month + 1
+        else:
+            month = 1
+            year = year + 1
+    for i in [1,2,3,4,5,6,7,8,9]:
+        if i == month:
+            month = '0'+ str(month)
+            break
+    return str(year) + '-' + str(month) + '-' + str(day)
+
+def draw_data_for_date(X, y, n):
+    import matplotlib.pyplot as plt 
+    import matplotlib.ticker as ticker
+    # 根據ticker的功能改變第一個為初始的數據，第二個則為間隔
+    ticker_spacing = len(X)/13  # 日期的字符串數組
+    # 創建畫佈
+    fig, ax = plt.subplots()
+    plt.plot(X, y, 'r--', label='a')
+    
+    # rotation=30 為傾斜的度數，因為日期較長，需要傾斜才能更清晰顯示
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(ticker_spacing))
+    plt.xticks(rotation=30)
+    plt.show()
+    
+
 def draw_data(X , y , new_X , new_Y , n = 0 , axis = 0 , name = 'learing'):
     import matplotlib.pyplot as plt
-    plt.plot(X, y, "b--", label = 'data')
-    plt.plot(new_X, new_Y, "r-", label = 'linear')
+    import matplotlib.ticker as ticker
+    ticker_spacing = 7 #len(X)/13  # 日期的字符串數組
+    fig, ax = plt.subplots()
+    range_1 = n
+    range_2 = n+n+1
+    if axis == 0:
+        range_1 = len(X)
+        range_2 = len(new_X)
+        ticker_spacing = 365 #len(X)/13  # 日期的字符串數組
+    plt.plot(X[len(X)-range_1:], y[len(X)-range_1:], "b--", label = 'data')
+    plt.plot(new_X[len(new_X)-range_2:], new_Y[len(new_X)-range_2:], "r-", label = 'linear')
     plt.legend(loc="best", fontsize=14)
     plt.title(name, fontsize=18)
-    if axis:
-        plt.axis( [X[len(X)-1]-10-n
-                , new_X[len(new_X)-1]+10+n
-                , y[len(y)-1]-20
-                , new_Y[len(new_Y)-1]+20])
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(ticker_spacing))
+    plt.xticks(rotation=30)
+    
     plt.show()
 
 def studen_CNN_LSTM_model(X, y , epochs = 5 , batch_size = 15 , learning_rate = 0.005):#進行資料訓練，並且儲存
