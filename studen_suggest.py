@@ -14,7 +14,6 @@ def suggest_start(new_data , n_days):
     np_time_data = time_data.values
     number_time_data = []
     y_date = []
-    
     #將存在np_time_data裡面的字串時間轉換為datetime，以方便後續轉換數字
     for i in np_time_data:
         a = str(i)
@@ -35,7 +34,6 @@ def suggest_start(new_data , n_days):
     #↑以上，為提取資料，如果模組沒問題的話只要動上半部
     #-------------------------------------------分隔線----------------------------------------------------------
     #↓以下，為訓練預測資料，大概只要改改參數就OK了
-    
     #資料標準化
     max_features, min_features = max(X_X), min(X_X)
     X_X = (X_X-min_features)/(max_features-min_features)
@@ -48,7 +46,6 @@ def suggest_start(new_data , n_days):
         y_train.append(X_X[i, 0])
     X_train, y_train = np.array(X_train), np.array(y_train)
     X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
-    
     #開始訓練
     model , pred = studen_deep_linear.studen_CNN_LSTM_model(
         X_train , y_train, epochs = 6 , batch_size = 20 , learning_rate = 0.001
@@ -84,9 +81,11 @@ def suggest_start(new_data , n_days):
     
 if __name__ == "__main__":
     data = (pd.read_csv("tech_every_day3.csv")
-           [lambda x: x['stock_id'] == 6201 ]     #lambda x:x*x為密名函示 , 類似 def a(x): return x*x
+           [lambda x: x['stock_id'] == 57 ]     #lambda x:x*x為密名函示 , 類似 def a(x): return x*x
             )
     new_data = data[~(data['mean5'].isnull())]        #選取在mean5標籤下並非NaN值
     n_days = len(new_data)  
     suggest , X_pred , pred , np_time_data , X_X , Y_Y = suggest_start(new_data , n_days)
+    n = 30
+    print_x , print_y , print_new_X , print_new_Y = studen_deep_linear.draw_plotly(np_time_data , X_X, np_time_data[30:] , pred, 30, axis = 0 , name = 'plotly')
     
