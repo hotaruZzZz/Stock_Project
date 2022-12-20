@@ -10,7 +10,7 @@ def year4(Year):    #判斷當年有無多一天
         return 0
     if thr == 0:
         return 1
-    
+
 def Date_converts_list(D):  #轉換年月日為第幾天
     Year4 = year4(D.year)
     #判斷當月總日期
@@ -72,19 +72,26 @@ def create_data(year , month , day):
             break
     return str(year) + '-' + str(month) + '-' + str(day)
 
-def draw_data_for_date(X, y, n):
-    import matplotlib.pyplot as plt 
-    import matplotlib.ticker as ticker
-    # 根據ticker的功能改變第一個為初始的數據，第二個則為間隔
-    ticker_spacing = len(X)/13  # 日期的字符串數組
-    # 創建畫佈
-    fig, ax = plt.subplots()
-    plt.plot(X, y, 'r--', label='a')
-    
-    # rotation=30 為傾斜的度數，因為日期較長，需要傾斜才能更清晰顯示
-    ax.xaxis.set_major_locator(ticker.MultipleLocator(ticker_spacing))
-    plt.xticks(rotation=30)
-    plt.show()
+def draw_plotly(X , y , new_X , new_Y , n = 0 , axis = 0 , name = 'learing'):
+    import plotly.express as px
+    import plotly.graph_objects as go
+    import plotly.io as pio
+    pio.renderers.default = 'browser' #這行是列應到瀏覽器上，加上上面那行事都是針對spyder做處理的，可斟酌註解
+    list_y = y.tolist()
+    list_new_x = new_X.tolist()
+    list_new_y = new_Y.tolist()
+    print_x = X.tolist()
+    print_y = []
+    print_new_X = new_X.tolist()
+    print_new_Y = []
+    for i in range(len(X)):
+        print_y.append(list_y[i][0])
+    for i in range(len(new_X)):
+        print_new_Y.append(list_new_y[i][0])
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=print_x, y=print_y, mode = "lines"))
+    fig.show()
+    return print_x , print_y , print_new_X , print_new_Y
     
 
 def draw_data(X , y , new_X , new_Y , n = 0 , axis = 0 , name = 'learing'):
@@ -122,7 +129,7 @@ def studen_CNN_LSTM_model(X, y , epochs = 5 , batch_size = 15 , learning_rate = 
     model.add(Dense(units=1))#最後輸出層
     #模型編譯，損失函示(Mean Squared Error)，優化契adam
     model.compile(loss='mse',optimizer=Adam(learning_rate = learning_rate))
-    model.fit(X, y, epochs=epochs, batch_size=batch_size, verbose=2)
+    model.fit(X, y, epochs=epochs, batch_size=batch_size, verbose=0)
     model.save("studen_deep_linear.h5")
     
     #分析
