@@ -81,6 +81,7 @@ for i in suggest_id:         #range(10)改成list_id
     #關閉連線
     db.close()
     
+    
     #print(data)#close = np.array(data)
     close = data[7]
     
