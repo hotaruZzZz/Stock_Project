@@ -76,6 +76,8 @@ def draw_plotly(X , y , new_X , new_Y , n = 0 , axis = 0 , name = 'learing'):
     import plotly.express as px
     import plotly.graph_objects as go
     import plotly.io as pio
+    from plotly.offline import plot
+        
     pio.renderers.default = 'browser' #這行是列應到瀏覽器上，加上上面那行事都是針對spyder做處理的，可斟酌註解
     list_y = y.tolist()
     list_new_x = new_X.tolist()
@@ -88,10 +90,12 @@ def draw_plotly(X , y , new_X , new_Y , n = 0 , axis = 0 , name = 'learing'):
         print_y.append(list_y[i][0])
     for i in range(len(new_X)):
         print_new_Y.append(list_new_y[i][0])
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=print_x, y=print_y, mode = "lines"))
-    fig.show()
-    return print_x , print_y , print_new_X , print_new_Y
+    fig1 = go.Scatter(x=print_x, y=print_y, mode = "lines", name='data')
+    fig2 = go.Scatter(x=print_new_X, y=print_new_Y, mode = "lines", name='learing',opacity=0.6)
+    layout = go.Layout(title=name)
+    plot_div= plot({"data": [fig1,fig2],"layout": layout},output_type='div')
+    return  plot_div
+    #return print_x , print_y , print_new_X , print_new_Y, plot_div
     
 
 def draw_data(X , y , new_X , new_Y , n = 0 , axis = 0 , name = 'learing'):
@@ -106,7 +110,7 @@ def draw_data(X , y , new_X , new_Y , n = 0 , axis = 0 , name = 'learing'):
         range_2 = len(new_X)
         ticker_spacing = 365 #len(X)/13  # 日期的字符串數組
     plt.plot(X[len(X)-range_1:], y[len(X)-range_1:], "b--", label = 'data')
-    plt.plot(new_X[len(new_X)-range_2:], new_Y[len(new_X)-range_2:], "r-", label = 'linear')
+    plt.plot(new_X[len(new_X)-range_2:], new_Y[len(new_X)-range_2:], "r-", label = 'learing')
     plt.legend(loc="best", fontsize=14)
     plt.title(name, fontsize=18)
     ax.xaxis.set_major_locator(ticker.MultipleLocator(ticker_spacing))
