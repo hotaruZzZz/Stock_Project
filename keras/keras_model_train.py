@@ -35,26 +35,28 @@ def keras_image_train(x_train , x_label , y_valid , y_label , n , epochs = 100 ,
     model.add(Convolution2D(100,(3,3),input_shape=(n,n,3),activation='relu'))
     model.add(BatchNormalization())
     model.add(MaxPooling2D(pool_size=(3,3)))
+
+    #卷積組合
+    model.add(Convolution2D(75,(2,2),activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2,2)))
     #卷積組合
     model.add(Convolution2D(50,(2,2),activation='relu'))
     model.add(MaxPooling2D(pool_size=(2,2)))
     #卷積組合
     model.add(Convolution2D(25,(2,2),activation='relu'))
     model.add(MaxPooling2D(pool_size=(2,2)))
-    
+
     #flatten
     model.add(Flatten())
     
     #FC
     model.add(Dense(units=100,activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(units=50,activation='relu'))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.3))
     
     model.add(Dense( units=len(x_label[0])
                     ,kernel_initializer='normal'
                     ,activation='softmax'   ))
-    model.compile( optimizer = Adam(0.001)
+    model.compile( optimizer = Adam(0.0001)
                   ,loss = 'categorical_crossentropy'
                   ,metrics = ['accuracy']   )
     output = model.fit( x_train
