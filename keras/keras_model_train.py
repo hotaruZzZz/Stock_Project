@@ -5,36 +5,56 @@ from keras.layers import Flatten
 from keras.layers import Dense
 from keras.layers import Dropout
 from keras.layers import BatchNormalization
+from keras.layers import Input
 import numpy as np
 import tensorflow as tf
+from tensorflow.keras.applications.efficientnet import EfficientNetB0
 
+def keras_application_model(x_train , x_label , y_valid , y_label , n , epochs = 100 , batch_size = 32):
+    inputs = Input(shape=(x_train.shape[1],x_train.shape[2],x_train.shape[3]))
+    outputs = EfficientNetB0(include_top=False 
+                             ,weights = None
+                             , input_shape = (x_train.shape[1],x_train.shape[2],x_train.shape[3]))(inputs)
+
+    mod = tf.keras.Model(inputs, outputs)
+    mod.compile(
+        optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"]
+    )
+    output = mod.fit( x_train
+                    , x_label
+                    ,epochs=epochs
+                    ,validation_data = (y_valid, y_label)
+                    ,batch_size = batch_size
+                    ,verbose=2           )
+    return mod , output
 
 def keras_image_train(x_train , x_label , y_valid , y_label , n , epochs = 100 , batch_size = 32):
     model=Sequential()
     from keras.optimizers import Adam
     #卷積組合
-    model.add(Convolution2D(n,(3,3),input_shape=(n,n,3),activation='relu'))
+    model.add(Convolution2D(100,(3,3),input_shape=(n,n,3),activation='relu'))
     model.add(BatchNormalization())
     model.add(MaxPooling2D(pool_size=(3,3)))
-    '''
+    #卷積組合
+    model.add(Convolution2D(50,(2,2),activation='relu'))
+    model.add(MaxPooling2D(pool_size=(2,2)))
     #卷積組合
     model.add(Convolution2D(25,(2,2),activation='relu'))
     model.add(MaxPooling2D(pool_size=(2,2)))
-    '''
+    
     #flatten
     model.add(Flatten())
     
     #FC
-    '''
     model.add(Dense(units=100,activation='relu'))
     model.add(Dropout(0.5))
-    '''
-    model.add(Dense(units=100,activation='relu'))
+    model.add(Dense(units=50,activation='relu'))
     model.add(Dropout(0.5))
+    
     model.add(Dense( units=len(x_label[0])
                     ,kernel_initializer='normal'
                     ,activation='softmax'   ))
-    model.compile( optimizer = Adam(0.0001)
+    model.compile( optimizer = Adam(0.001)
                   ,loss = 'categorical_crossentropy'
                   ,metrics = ['accuracy']   )
     output = model.fit( x_train
