@@ -45,12 +45,15 @@ for i in range(20):
     else:
         a = 0
 first = ['0050']
+first_number = 0
+number_list = []
 suggest_id.insert(0 , np.array(first))
 b = 0
 for i in suggest_id:
     print(i[0])
 for i in suggest_id:         #range(10)改成list_id
     data = []
+
     db = pymysql.connect(host='localhost', port=3306, user='test', passwd='1234123zxc', db='django', charset='utf8')
     #建立操作游標
     cursor = db.cursor()
@@ -84,15 +87,17 @@ for i in suggest_id:         #range(10)改成list_id
     
     #print(data)#close = np.array(data)
     close = data[7]
-    
-    suggest , number, plotly, plotly_2 = studen_suggest.suggest_start(data, len(data) , 1)
-max_number = 0
+    if b == 0:
+        first_number = studen_suggest.suggest_start(data, len(data) , b)
+        b = 1
+    else:
+        suggest , number, plotly, plotly_2 = studen_suggest.suggest_start(data, len(data) , b)
+        number_list.append((suggest_id , number))
+        
 number_suggest = 0
+suggest_list = []
 print('-------sugggest---------------')
-for i in range(len(suggest_list)):
-    if max_number < suggest_list[i][1]:
-        max_number = suggest_list[i][1]
-        number_suggest = i
-
-print("suggest:\n" , suggest_list[1:])
-print('best suggest: ' , number_suggest)
+for i in number_list:
+    if first_number < i[1]:
+        suggest_list.append(i[0])
+print("suggest:\n" , suggest_list)
