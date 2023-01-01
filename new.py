@@ -92,6 +92,7 @@ for i in suggest_id:         #range(10)改成list_id
         b = 1
     else:
         suggest , number, plotly, plotly_2 = studen_suggest.suggest_start(data, len(data) , b)
+        print(type(suggest_id) , suggest_id , type(number) , number)
         number_list.append((suggest_id , number))
         
 number_suggest = 0
