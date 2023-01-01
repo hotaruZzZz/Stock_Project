@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import datetime
 import matplotlib.pyplot as plt
 
-def suggest_start(new_data , n_days):
+def suggest_start(new_data , n_days , first_suggest):
 
     
     mean5_data = new_data[7]   #以收盤價作為訓練
@@ -95,9 +95,12 @@ def suggest_start(new_data , n_days):
         suggest = 1
     if __name__ == "__main__":
         return suggest , X_pred , pred , np_time_data , X_X , new_time_data
-    else:
-        number = X_pred[len(X_pred)-1]
-        return suggest , number, plotly_div, plotly_div_result 
+    eles:
+        if first_suggest == 1:
+            number = X_pred[len(X_pred)-1]
+            return suggest , number, plotly_div, plotly_div_result
+        else:
+            return X_pred[len(X_pred)-1]
     
       
 if __name__ == "__main__":
