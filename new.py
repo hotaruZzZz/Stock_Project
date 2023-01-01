@@ -29,25 +29,27 @@ db.close()
 list_id = list_id.values
 print(list_id)
 print(type(list_id))
-import random
-suggest_id = []
-a = 0
-for i in range(20):
-    random_number = random.randrange(22748)
-    for j in suggest_id:
-        if j == random_number:
-            a = 1
-            break
-    if a == 0:
-        print(random_number)
-        suggest_id.append(list_id[random_number])
-    else:
-        a = 0
-first = ['0050']
-suggest_id.insert(0 , np.array(first))
+tabel_confirm = [0] * len(list_id)
+suggest_total = 0
+'''
 for i in suggest_id:
     print(i[0])
-def fun(db , cursor , suggest_id):
+'''
+def fun(db , cursor , tabel_confirm , suggest_total):
+    import random
+    suggest_id = []
+    suggest_long = 0
+    while suggest_long < 20:
+        random_number = random.randrange(22748)
+        if tabel_confirm[random_number] == 0:
+            suggest_id.append(list_id[random_number])
+            tabel_confirm[random_number] = 1
+            suggest_long += 1
+            suggest_total += 1
+        if suggest_list == 22748:
+            return 0,0,tabel_confirm,0
+    first = ['0050']
+    suggest_id.insert(0 , np.array(first))
     b = 0
     first_number = 0
     number_list = []
@@ -91,13 +93,16 @@ def fun(db , cursor , suggest_id):
             number_list.append((str(i[0]) , number[0]))
     #關閉連線
     db.close()
-    return first_number[0], number_list
+    return first_number[0], number_list, tabel_confirm, suggest_total
 suggest_list = []
 BREAK = 1
 total = 1
 while BREAK:
     if len(suggest_list) == 0:
-        first_number , number_list = fun(db , cursor , suggest_id)
+        first_number , number_list, tabel_confirm, suggest_total = fun(db , cursor , tabel_confirm , suggest_total)
+        if first_number == 0 and number_list == 0 and suggest_total == 0:
+            print("無法找到更好的")
+            break
         number_suggest = 0
         
         print(type(first_number) , first_number)
@@ -109,4 +114,4 @@ while BREAK:
                 suggest_list.append(i[0])
     else:
         print("suggest:\n" , suggest_list)
-        BREAK = 0
+        break
