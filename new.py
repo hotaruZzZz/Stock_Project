@@ -92,13 +92,14 @@ for i in suggest_id:         #range(10)改成list_id
         b = 1
     else:
         suggest , number, plotly, plotly_2 = studen_suggest.suggest_start(data, len(data) , b)
-        print(type(suggest_id) , suggest_id , type(number) , number)
-        number_list.append((str(i[0]) , number))
+        number_list.append((str(i[0]) , number[0]))
         
 number_suggest = 0
 suggest_list = []
+print(type(first_number) , first_number)
 print('-------sugggest---------------')
 for i in number_list:
+    print(type(i[0]) , i[0])
     if first_number < i[1]:
         suggest_list.append(i[0])
 print("suggest:\n" , suggest_list)
