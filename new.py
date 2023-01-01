@@ -85,7 +85,7 @@ for i in suggest_id:         #range(10)改成list_id
     #print(data)#close = np.array(data)
     close = data[7]
     
-    suggest , number, plotly, plotly_2 = studen_suggest.suggest_start(data, len(data))
+    suggest , number, plotly, plotly_2 = studen_suggest.suggest_start(data, len(data) , 0)
 max_number = 0
 number_suggest = 0
 print('-------sugggest---------------')
