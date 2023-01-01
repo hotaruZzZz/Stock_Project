@@ -99,7 +99,7 @@ suggest_list = []
 print(type(first_number) , first_number)
 print('-------sugggest---------------')
 for i in number_list:
-    print(type(i[0]) , i[0])
-    if first_number < i[1]:
+    #print(type(i[0]) , i[0])
+    if first_number[0] < i[1]:
         suggest_list.append(i[0])
 print("suggest:\n" , suggest_list)
