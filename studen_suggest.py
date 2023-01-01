@@ -42,8 +42,6 @@ def suggest_start(new_data , n_days):
     #資料標準化
     max_features, min_features = max(X_X), min(X_X)
     X_X = (X_X-min_features)/(max_features-min_features)
-    max_features, min_features = max(X_X), min(X_X)
-    X_X = (X_X-min_features)/(max_features-min_features)
     #資料三維處理
     if n_days <= 30:
         n = n_days - 10
@@ -54,7 +52,7 @@ def suggest_start(new_data , n_days):
         n = 30
     X_train = []
     y_train = []
-#print(n, n_days)
+    #print(n, n_days)
     for i in range(n, n_days):
         #print(1)
         X_train.append(X_X[i-n:i, 0])
