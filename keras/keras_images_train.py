@@ -70,21 +70,21 @@ def open_data(n_size , number = 11788*6):
             next_vail += 1
             next_a = 0
             one_classe = 0
-    x_train = np.array(dataset_train , dtype = "float64") /255
+    x_train = np.array(dataset_train , dtype = "float64")
     x_label = np.array(label_train , dtype = "int")
-    y_valid = np.array(dataset_valid , dtype = "float64") /255
+    y_valid = np.array(dataset_valid , dtype = "float64")
     y_label = np.array(label_valid , dtype = "int") 
-    z_test = np.array(dataset_test , dtype = "float64") /255
+    z_test = np.array(dataset_test , dtype = "float64")
     z_label = np.array(label_test , dtype = "int") 
     fp_image.close()
     fp_classes.close()
     fp_number_data.close()
     return x_train , x_label , y_valid , y_label , z_test , z_label
 
-
-number = 720
-n_size = 75
-epochs_int = 40
+#11788*6
+number = 11788*6
+n_size = 150
+epochs_int = 100
 #建立訓練、驗證、測試三個分類的訓練圖檔和標籤
 x_train , x_label , y_valid , y_label , z_test , z_label = open_data(n_size , number)
 #print(x_train.shape)
