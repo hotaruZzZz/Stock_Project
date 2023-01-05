@@ -7,13 +7,13 @@ from keras.layers import Dropout
 from keras.layers import BatchNormalization
 from keras.optimizers import Adam
 import keras
-import numpy as np
 import tensorflow as tf
-from tensorflow.keras.applications import EfficientNetB5
-
+from tensorflow.keras.applications import ResNet50
+import Network_ResNet50 as NR50
+'''
 def keras_application_model(x_train , x_label , y_valid , y_label , n , epochs = 100 , batch_size = 32):
     INPUT = (x_train.shape[1],x_train.shape[2],x_train.shape[3])
-    mod = EfficientNetB5(input_shape = INPUT,weights='imagenet', include_top=False)
+    mod = ResNet50(input_shape = INPUT,weights='imagenet', include_top=False)
     x = keras.layers.GlobalMaxPooling2D()(mod.output)
     x = Flatten()(x)
     output = Dense(len(x_label[0]) , activation='softmax')(x)
@@ -29,26 +29,40 @@ def keras_application_model(x_train , x_label , y_valid , y_label , n , epochs =
                     ,batch_size = batch_size
                     ,verbose=2           )
     return model , outputs
+'''
+def keras_application_model(x_train , x_label , y_valid , y_label , n , epochs = 100 , batch_size = 32):
+    INPUT = (x_train.shape[1], x_train.shape[2] , x_train.shape[3])
+    model = NR50.studen_creat_ResNet50(input_shape=INPUT)
+    
+    model.compile(
+        optimizer=Adam(0.0001), loss="categorical_crossentropy", metrics=["accuracy"]
+    )
+    outputs= model.fit( x_train
+                    , x_label
+                    ,epochs=epochs
+                    ,validation_data = (y_valid, y_label)
+                    ,batch_size = batch_size
+                    ,verbose=2           )
+    return model , outputs
 
 def keras_image_train(x_train , x_label , y_valid , y_label , n , epochs = 100 , batch_size = 32):
     model=Sequential()
     #卷積組合
-    model.add(Convolution2D(n,(3,3),input_shape=(n,n,3),activation='relu'))
-    model.add(Convolution2D(n,(3,3),input_shape=(n,n,3),activation='relu'))
+    model.add(Convolution2D(112,(3,3),input_shape=(n,n,3),activation='relu'))
     model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(3,3)))
-
+    model.add(MaxPooling2D(pool_size=(2,2)))
     #卷積組合
-    model.add(Convolution2D(n/2,(3,3),activation='relu'))
-    model.add(Convolution2D(n/2,(3,3),activation='relu'))
+    model.add(Convolution2D(112,(3,3),input_shape=(n,n,3),activation='relu'))
     model.add(BatchNormalization())
-    model.add(MaxPooling2D(pool_size=(3,3)))
+    model.add(MaxPooling2D(pool_size=(2,2)))
+    #卷積組合
+    model.add(Convolution2D(56,(3,3),input_shape=(n,n,3),activation='relu'))
+    model.add(BatchNormalization())
+    model.add(MaxPooling2D(pool_size=(2,2)))
     #卷積組合
     model.add(Convolution2D(25,(3,3),activation='relu'))
+    model.add(Convolution2D(25,(3,3),activation='relu'))
     model.add(MaxPooling2D(pool_size=(3,3)))
-    #卷積組合
-    model.add(Convolution2D(25,(2,2),activation='relu'))
-    model.add(MaxPooling2D(pool_size=(2,2)))
 
     #flatten
     model.add(Flatten())
@@ -56,7 +70,12 @@ def keras_image_train(x_train , x_label , y_valid , y_label , n , epochs = 100 ,
     #FC
     model.add(Dense(units=100,activation='relu'))
     model.add(Dropout(0.3))
-    
+    model.add(Dense(units=100,activation='relu'))
+    model.add(Dropout(0.3))
+    model.add(Dense(units=100,activation='relu'))
+    model.add(Dropout(0.3))
+    model.add(Dense(units=100,activation='relu'))
+    model.add(Dropout(0.3))
     model.add(Dense( units=len(x_label[0])
                     ,kernel_initializer='normal'
                     ,activation='softmax'   ))
