@@ -77,7 +77,6 @@ def draw_plotly(X , y , new_X , new_Y , n = 0 , axis = 0 , name = 'learing'):
     import plotly.graph_objects as go
     import plotly.io as pio
     from plotly.offline import plot
-        
     pio.renderers.default = 'browser' #這行是列應到瀏覽器上，加上上面那行事都是針對spyder做處理的，可斟酌註解
     list_y = y.tolist()
     list_new_x = new_X.tolist()
@@ -95,13 +94,13 @@ def draw_plotly(X , y , new_X , new_Y , n = 0 , axis = 0 , name = 'learing'):
     layout = go.Layout(title=name)
     plot_div= plot({"data": [fig1,fig2],"layout": layout},output_type='div')
     return  plot_div
-    #return print_x , print_y , print_new_X , print_new_Y, plot_div
+    #return print_x , print_y , print_new_X , print_new_Y
     
 
 def draw_data(X , y , new_X , new_Y , n = 0 , axis = 0 , name = 'learing'):
     import matplotlib.pyplot as plt
     import matplotlib.ticker as ticker
-    ticker_spacing = 7 #len(X)/13  # 日期的字符串數組
+    ticker_spacing = n*7/31  # 日期的字符串數組
     fig, ax = plt.subplots()
     range_1 = n
     range_2 = n+n+1
@@ -110,7 +109,7 @@ def draw_data(X , y , new_X , new_Y , n = 0 , axis = 0 , name = 'learing'):
         range_2 = len(new_X)
         ticker_spacing = 365 #len(X)/13  # 日期的字符串數組
     plt.plot(X[len(X)-range_1:], y[len(X)-range_1:], "b--", label = 'data')
-    plt.plot(new_X[len(new_X)-range_2:], new_Y[len(new_X)-range_2:], "r-", label = 'learing')
+    plt.plot(new_X[len(new_X)-range_2:], new_Y[len(new_X)-range_2:], "r-", label = 'linear')
     plt.legend(loc="best", fontsize=14)
     plt.title(name, fontsize=18)
     ax.xaxis.set_major_locator(ticker.MultipleLocator(ticker_spacing))
@@ -128,25 +127,31 @@ def studen_CNN_LSTM_model(X, y , epochs = 5 , batch_size = 15 , learning_rate = 
     model.add(Dropout(0.2))
     model.add(LSTM(units=50,return_sequences = True))
     model.add(Dropout(0.2))
+    model.add(LSTM(units=50,return_sequences = True))
+    model.add(Dropout(0.2))
     model.add(LSTM(units=50,activation='relu'))
     model.add(Dropout(0.2))
+    model.add(Dense(units=16,kernel_initializer="uniform",activation='relu'))
+    model.add(Dense(units=8,kernel_initializer="uniform",activation='relu'))
+    model.add(Dense(units=4,kernel_initializer="uniform",activation='relu'))
+    model.add(Dense(units=2,kernel_initializer="uniform",activation='linear'))
     model.add(Dense(units=1))#最後輸出層
     #模型編譯，損失函示(Mean Squared Error)，優化契adam
     model.compile(loss='mse',optimizer=Adam(learning_rate = learning_rate))
-    model.fit(X, y, epochs=epochs, batch_size=batch_size, verbose=0)
+    output = model.fit(X, y, epochs=epochs, batch_size=batch_size, validation_split=0.1, verbose=2)
     model.save("studen_deep_linear.h5")
     
     #分析
     pred = model.predict(X)
     return model , pred
 
-def studen_predict(X, y, n, days = 14): #使用模型做預測做推薦
+def studen_predict(X, y, days = 14 , n_days = 30): #使用模型做預測做推薦
     from keras.models import load_model
     import numpy as np
     model = load_model("studen_deep_linear.h5")
     #N個資料為一筆資料訓練隔天的數據，一天一天往前推算數值
     for i in range(days):
-        predict_data = X[len(X)-n:]
+        predict_data = X[len(X)-n_days:]
         train_array = predict_data
         train_array = np.reshape(train_array, (predict_data.shape[1], predict_data.shape[0], 1))
         new_pred = model.predict(train_array)
@@ -155,4 +160,13 @@ def studen_predict(X, y, n, days = 14): #使用模型做預測做推薦
     for i in range(days):
         y = np.append(y, np.array([l+i+1]) , axis = 0)
     return X , y
+
+def loss_function(X , y , n):
+    max_features, min_features = max(X), min(X)
+    X = (X-min_features)/(max_features-min_features)
+    new_X , new_Y = studen_predict(X[:len(X)-n], y[:len(y)-n], days = n)
+    X = X * (max_features-min_features) + min_features
+    new_X = new_X * (max_features-min_features) + min_features
+    draw_data(y, X, new_Y, new_X, n, axis = 1 , name = "valid")
+    
     

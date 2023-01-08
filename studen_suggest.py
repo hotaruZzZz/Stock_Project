@@ -8,14 +8,11 @@ import matplotlib.pyplot as plt
 def suggest_start(new_data , n_days , first_suggest):
 
     
-    mean5_data = new_data[7]   #以收盤價作為訓練
-    time_data = new_data[3]    #日期
+    mean5_data = new_data["mean5"]
+    time_data = new_data["date"]
+    n_days = len(new_data)  
     X_X = mean5_data.values
-    X_X = np.asarray(X_X).astype('float32')
     np_time_data = time_data.values
-    np_time_data = np.asarray(np_time_data).astype('str')
-    for i in range(n_days):
-        np_time_data[i] = np_time_data[i][:10]
     number_time_data = []
     y_date = []
     
@@ -42,6 +39,7 @@ def suggest_start(new_data , n_days , first_suggest):
     #資料標準化
     max_features, min_features = max(X_X), min(X_X)
     X_X = (X_X-min_features)/(max_features-min_features)
+
     #資料三維處理
     if n_days <= 30:
         n = n_days - 10
@@ -52,7 +50,7 @@ def suggest_start(new_data , n_days , first_suggest):
         n = 30
     X_train = []
     y_train = []
-    #print(n, n_days)
+#print(n, n_days)
     for i in range(n, n_days):
         #print(1)
         X_train.append(X_X[i-n:i, 0])
@@ -64,7 +62,7 @@ def suggest_start(new_data , n_days , first_suggest):
     model , pred = studen_deep_linear.studen_CNN_LSTM_model(
         X_train , y_train, epochs = 6 , batch_size = 20 , learning_rate = 0.001
         )
-    X_pred , Y_pred = studen_deep_linear.studen_predict(X_X , Y_Y, n , days = 31)
+    X_pred , Y_pred = studen_deep_linear.studen_predict(X_X , Y_Y, n_days = n , days = 31)
     new_time_data = np_time_data
     for i in range(31):
         time_str = new_time_data[len(new_time_data)-1]
@@ -80,11 +78,10 @@ def suggest_start(new_data , n_days , first_suggest):
     
     #繪製
     #draw_data(第一個X軸，第一個Y軸，第二個X軸，第二個Y軸，上下間距，範圍開啟(0為關閉，其他數字都是開啟)，標題)
-    #studen_deep_linear.draw_data(np_time_data , X_X, new_time_data, X_pred, n, axis = 1 , name = 'data_predict')
-    #studen_deep_linear.draw_data(np_time_data , X_X, np_time_data[n:] , pred, n, axis = 0 , name = 'data_learning')
+    studen_deep_linear.draw_data(np_time_data , X_X, new_time_data, X_pred, n, axis = 1 , name = 'data_predict')
+    studen_deep_linear.draw_data(np_time_data , X_X, np_time_data[n:] , pred, n, axis = 0 , name = 'data_learning')
     
     #print(studen_deep_linear.draw_plotly(np_time_data , X_X, np_time_data[30:] , pred, 30, axis = 0 , name = 'plotly'))
-    #draw_data_for_date(np_time_data , X_X , 30)
     #Y_pred[len(Y_pred)-n]+3
     plotly_div_result = studen_deep_linear.draw_plotly(np_time_data , X_X, new_time_data, X_pred, n, axis = 1 , name = '預測結果')
     plotly_div = studen_deep_linear.draw_plotly(np_time_data , X_X, np_time_data[30:] , pred, 30, axis = 0 , name = '訓練結果')
@@ -94,23 +91,27 @@ def suggest_start(new_data , n_days , first_suggest):
     else:
         suggest = 1
     if __name__ == "__main__":
-        return suggest , X_pred , pred , np_time_data , X_X , new_time_data
-    eles:
+        return suggest , X_pred , pred , np_time_data , X_X , new_time_data , Y_Y , model
+    else:
         if first_suggest == 1:
-            number = X_pred[len(X_pred)-1]
-            return suggest , number, plotly_div, plotly_div_result
+            number_1 = X_pred[len(X_pred)-1]
+            number_2 = X_X[len(X_X)-1]
+            return suggest , number_1 , number_2, plotly_div, plotly_div_result
         else:
             return X_pred[len(X_pred)-1]
     
       
 if __name__ == "__main__":
     data = (pd.read_csv("tech_every_day3.csv")
-           [lambda x: x['stock_id'] == 57 ]     #lambda x:x*x為密名函示 , 類似 def a(x): return x*x
+           [lambda x: x['stock_id'] == 56 ]     #lambda x:x*x為密名函示 , 類似 def a(x): return x*x
             )
     new_data = data[~(data['mean5'].isnull())]        #選取在mean5標籤下並非NaN值
     n_days = len(new_data)  
-    suggest , X_pred , pred , np_time_data , X_X , Y_Y = suggest_start(new_data , n_days)
+    suggest , X_pred , pred , np_time_data , X_X , new_time_data , Y_Y , model = suggest_start(new_data , n_days , first_suggest=1)
     n = 30
-    print(studen_deep_linear.draw_plotly(np_time_data , X_X, np_time_data[30:] , pred, 30, axis = 0 , name = 'plotly'))
+    studen_deep_linear.loss_function(X_X , Y_Y , 31)
+    studen_deep_linear.loss_function(X_X , Y_Y , 182)
+    studen_deep_linear.loss_function(X_X , Y_Y , 365)
+    #print(studen_deep_linear.draw_plotly(np_time_data , X_X, np_time_data[30:] , pred, 30, axis = 0 , name = 'plotly'))
     #print_x , print_y , print_new_X , print_new_Y = studen_deep_linear.draw_plotly(np_time_data , X_X, np_time_data[30:] , pred, 30, axis = 0 , name = 'plotly')
     
