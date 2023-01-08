@@ -124,17 +124,14 @@ def studen_CNN_LSTM_model(X, y , epochs = 5 , batch_size = 15 , learning_rate = 
     #神經網路
     model = Sequential()
     model.add(LSTM(units=50,input_shape = (X.shape[1], 1),return_sequences = True))#輸入層
-    model.add(Dropout(0.2))
     model.add(LSTM(units=50,return_sequences = True))
+    model.add(LSTM(units=50,return_sequences = True,activation='linear'))
     model.add(Dropout(0.2))
-    model.add(LSTM(units=50,return_sequences = True))
+    model.add(LSTM(units=50,activation='linear'))
     model.add(Dropout(0.2))
-    model.add(LSTM(units=50,activation='relu'))
-    model.add(Dropout(0.2))
-    model.add(Dense(units=16,kernel_initializer="uniform",activation='relu'))
-    model.add(Dense(units=8,kernel_initializer="uniform",activation='relu'))
-    model.add(Dense(units=4,kernel_initializer="uniform",activation='relu'))
-    model.add(Dense(units=2,kernel_initializer="uniform",activation='linear'))
+    model.add(Dense(units=16,kernel_initializer="uniform",activation='linear'))
+    model.add(Dense(units=8,kernel_initializer="uniform",activation='linear'))
+    model.add(Dense(units=4,kernel_initializer="uniform",activation='linear'))
     model.add(Dense(units=1))#最後輸出層
     #模型編譯，損失函示(Mean Squared Error)，優化契adam
     model.compile(loss='mse',optimizer=Adam(learning_rate = learning_rate))
