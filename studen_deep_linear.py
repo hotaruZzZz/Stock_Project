@@ -72,7 +72,7 @@ def create_data(year , month , day):
             break
     return str(year) + '-' + str(month) + '-' + str(day)
 
-def draw_plotly(X , y , new_X , new_Y , n = 0 , axis = 0 , name = 'learing'):
+def draw_plotly(X , y , new_X , new_Y , first_Y , n = 0 , axis = 0 , name = 'learing'):
     import plotly.express as px
     import plotly.graph_objects as go
     import plotly.io as pio
@@ -81,18 +81,22 @@ def draw_plotly(X , y , new_X , new_Y , n = 0 , axis = 0 , name = 'learing'):
     list_y = y.tolist()
     list_new_x = new_X.tolist()
     list_new_y = new_Y.tolist()
+    list_first_y = first_Y.totlist()
     print_x = X.tolist()
     print_y = []
     print_new_X = new_X.tolist()
     print_new_Y = []
+    print_first_y = []
     for i in range(len(X)):
         print_y.append(list_y[i][0])
     for i in range(len(new_X)):
         print_new_Y.append(list_new_y[i][0])
+        print_first_y.append(list_first_y[i][0])
     fig1 = go.Scatter(x=print_x, y=print_y, mode = "lines", name='data')
     fig2 = go.Scatter(x=print_new_X, y=print_new_Y, mode = "lines", name='learing',opacity=0.6)
+    fig3 = go.Scatter(x=print_new_X, y=print_first_y, mode = "lines", name='0056')
     layout = go.Layout(title=name)
-    plot_div= plot({"data": [fig1,fig2],"layout": layout},output_type='div')
+    plot_div= plot({"data": [fig1,fig2,fig3],"layout": layout},output_type='div')
     return  plot_div
     #return print_x , print_y , print_new_X , print_new_Y
     

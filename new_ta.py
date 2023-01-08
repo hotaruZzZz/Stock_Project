@@ -79,6 +79,36 @@ suggest_id = ['2603'
                 ,'2809'
                 ,'3665'
                 ,'6271']
+db = pymysql.connect(host='localhost', port=3306, user='test', passwd='1234123zxc', db='django', charset='utf8')
+#建立操作游標
+cursor = db.cursor()
+#SQL語法
+sql = (
+    "select * from stock_data_data where sDate > '2020-11-01' and sNumber = '"
+    + '0056' +
+    "' and sClose != (-1.00) order by sDate;"
+    )#執行語法
+print(sql)
+try:
+  cursor.execute(sql)
+  result = DataFrame(cursor.fetchall())
+  data = result
+  if data.empty == True:
+      #print('empty')
+      pass
+  else:
+      #提交修改
+      db.commit()
+      #print(data)
+      print('success')
+except:
+  #發生錯誤時停止執行SQL
+  db.rollback()
+  print('error')
+  
+#print(data)#close = np.array(data)
+#close = data[7]
+pred_0056 , train_0056 = studen_suggest.suggest_start(data, len(data) , 0)
 number_list = []
 for i in suggest_id:         #range(10)改成list_id
     data = []
@@ -109,10 +139,10 @@ for i in suggest_id:         #range(10)改成list_id
       #發生錯誤時停止執行SQL
       db.rollback()
       print('error')
-      
+    
     #print(data)#close = np.array(data)
     #close = data[7]
-    suggest , number_1, number_2, plotly, plotly_2 = studen_suggest.suggest_start(data, len(data) , 1)
+    suggest , number_1, number_2, plotly, plotly_2 = studen_suggest.suggest_start(data, len(data) , 1 , train_0056 , pred_0056)
     number_list.append((i , number_1[0] , number_2[0]))
 #關閉連線
 db.close()

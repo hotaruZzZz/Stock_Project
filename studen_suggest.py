@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import datetime
 import matplotlib.pyplot as plt
 
-def suggest_start(new_data , n_days , first_suggest):
+def suggest_start(new_data , n_days , first_suggest , first_train = 0, first_pred = 0):
 
     
     mean5_data = new_data["mean5"]
@@ -83,8 +83,8 @@ def suggest_start(new_data , n_days , first_suggest):
     
     #print(studen_deep_linear.draw_plotly(np_time_data , X_X, np_time_data[30:] , pred, 30, axis = 0 , name = 'plotly'))
     #Y_pred[len(Y_pred)-n]+3
-    plotly_div_result = studen_deep_linear.draw_plotly(np_time_data , X_X, new_time_data, X_pred, n, axis = 1 , name = '預測結果')
-    plotly_div = studen_deep_linear.draw_plotly(np_time_data , X_X, np_time_data[30:] , pred, 30, axis = 0 , name = '訓練結果')
+    plotly_div_result = studen_deep_linear.draw_plotly(np_time_data , X_X, new_time_data, X_pred, first_pred, n, axis = 1 , name = '預測結果')
+    plotly_div = studen_deep_linear.draw_plotly(np_time_data , X_X, np_time_data[:len(np_time_data)-30] , pred, first_train, 30, axis = 0 , name = '訓練結果')
     
     if X_pred[len(X_pred)-1] <= X_X[len(X_X)-1]:
         suggest = 0
@@ -98,20 +98,20 @@ def suggest_start(new_data , n_days , first_suggest):
             number_2 = X_X[len(X_X)-1]
             return suggest , number_1 , number_2, plotly_div, plotly_div_result
         else:
-            return X_pred[len(X_pred)-1]
+            return X_pred , pred
     
       
 if __name__ == "__main__":
     data = (pd.read_csv("tech_every_day3.csv")
-           [lambda x: x['stock_id'] == 56 ]     #lambda x:x*x為密名函示 , 類似 def a(x): return x*x
+           [lambda x: x['stock_id'] == 2454 ]     #lambda x:x*x為密名函示 , 類似 def a(x): return x*x
             )
     new_data = data[~(data['mean5'].isnull())]        #選取在mean5標籤下並非NaN值
     n_days = len(new_data)  
     suggest , X_pred , pred , np_time_data , X_X , new_time_data , Y_Y , model = suggest_start(new_data , n_days , first_suggest=1)
     n = 30
-    studen_deep_linear.loss_function(X_X , Y_Y , 31)
-    studen_deep_linear.loss_function(X_X , Y_Y , 182)
-    studen_deep_linear.loss_function(X_X , Y_Y , 365)
+    #studen_deep_linear.loss_function(X_X , Y_Y , 31)
+    #studen_deep_linear.loss_function(X_X , Y_Y , 182)
+    #studen_deep_linear.loss_function(X_X , Y_Y , 365)
     #print(studen_deep_linear.draw_plotly(np_time_data , X_X, np_time_data[30:] , pred, 30, axis = 0 , name = 'plotly'))
     #print_x , print_y , print_new_X , print_new_Y = studen_deep_linear.draw_plotly(np_time_data , X_X, np_time_data[30:] , pred, 30, axis = 0 , name = 'plotly')
     
