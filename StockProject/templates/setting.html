@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %} 使用者資料 {% endblock %}
+{% block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>設定</title>
+</head>
+<body class="border border-3">
+    <div class="row align-items-center">
+        <div class="row">
+            <div class="col-6 col-md-4">
+                <h3>個人資訊</h3>
+                <table class="table table-sm">
+                    <tr>
+                        <td>姓名</td>
+                        <td><a href="change_name/">{{ user }}</a></td>
+                    </tr>
+                    <tr>
+                        <td>電子信箱</td>
+                        <td>{{ email }}</td>
+                    </tr>
+                    <tr>
+                        <td>密碼</td>
+                        <td><a href="reset_password/">更改密碼</a></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-8">
+                
+            </div>
+        </div>
+        
+    </div>
+    
+</body>
+</html>
+{% endblock %}

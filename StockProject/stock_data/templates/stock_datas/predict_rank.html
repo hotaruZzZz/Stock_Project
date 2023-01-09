@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %} 推薦股票 {% endblock %}
+{% block content%}
+
+
+<div class="container  ">
+
+    <form action="" method="Post">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-success" value="開始推薦">
+    </form>
+    <p></p>
+    {% for best in best %}
+    <h5>推薦股票: {{ best.code }} {{ best.name }}</h5>
+    {% endfor %}
+    {% autoescape off %}
+    {{ plot_div }}
+    {% endautoescape %}
+
+    {% autoescape off %}
+    {{ result }}
+    {% endautoescape %}
+    <h6>推薦排名</h6>
+<table class="table table-hover">
+    <thead>
+        <th>#</th>
+        <th>股票代號</th>
+        <th>收盤價</th>
+    </thead>
+        <tbody>
+            {% for data in data %}
+            <tr>
+                <td></td>
+                <td>{{ data.0 }}</td>
+                <td>{{ data.1 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+
+</div>
+{% endblock %}

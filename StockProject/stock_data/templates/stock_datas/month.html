@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %} 月報 {% endblock %}
+{% block content%}
+
+
+<div class="container  ">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input placeholder="請輸入年分(民國)" name="year">
+        <select name="month">
+            <option>請選擇月份</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select>
+        <input type="submit" class="btn btn-success" value="確定">
+    </form>
+    <table class="table table-hover">
+
+        <h2>{{ year }}年{{ month }}月</h2>
+        <thead>
+            <tr>
+                <th>公司代號</th>
+                <th>公司名稱</th>
+                <th>當月營收 </th>
+                <th>上月營收</th>
+                <th>去年當月營收</th>
+                <th>上月比較增減(%)</th>
+                <th>去年同月增減(%)</th>
+                <th>當月累計營收</th>
+                <th>去年累計營收</th>
+                <th>前期比較增減(%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in data %}
+            <tr>
+                <td>{{data.month_code}} </td>
+                <td> {{ data.month_name }} </td>
+                <td> {{ data.month_revenue }} </td>
+                <td> {{ data.month_lastrevenue }} </td>
+                <td> {{ data.month_lastyear }} </td>
+                <td> {{ data.month_lastmol }} </td>
+                <td> {{ data.month_samemol }} </td>
+                <td> {{ data.month_grand }} </td>
+                <td> {{ data.month_lastgrand  }} </td>
+                <td> {{ data.month_forwardmol }} </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %} 使用者資料 {% endblock %}
+{% block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>股票</title>
+</head>
+<body class="border border-3">
+    <h2>Welcome</h2>
+    {% if request.user.is_authenticated %}
+    <p>
+        {{request.user}} 您已經登入囉~
+        <a href="/stock_data/accounts/logout/">登出</a>
+    </p>
+    <a href="/stock_data/">首頁</a>
+    <a href="/stock_data/accounts/setting/">設定</a>
+    {% else %}
+    <p>您尚未登入喔~<a href="/stock_data/accounts/login/">登入</a></p>
+    <p>登入看更多資料</p>
+    <p>若您還沒有帳號，請<a href="/stock_data/accounts/register/">註冊</a></p>
+    {% endif %}
+
+
+</body>
+</html>
+{% endblock %}

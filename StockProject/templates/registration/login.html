@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load socialaccount %}
+
+{% block content%}
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</body>
+<head>
+    <meta charset="UTF-8">
+    <title>登入</title>
+</head>
+<body>
+    <form action="{% url 'login' %}" method="post" class="  container ">
+        {% csrf_token %}
+        <table class="row gx-5">
+            {{ form.as_table }}
+        </table>
+
+        &nbsp
+        <input type="submit" class="btn btn-secondary gx-5" value="登入" />
+
+        <a class="btn btn-danger" href="{% provider_login_url 'google' method='oauth2' %}">Google登入</a>
+
+    </form>
+    <p></p>
+    <p class="  container ">若您還沒有帳號，請<a href="/stock_data/accounts/register/">註冊</a></p>
+</body>
+</html>
+{% endblock %}

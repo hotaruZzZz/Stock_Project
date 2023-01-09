@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block title %} 首頁 {% endblock %}
+{% block content%}
+
+
+<div class="container  ">
+    <div class="p-5 mb-4  rounded-3" style="background: #dee2e6; ">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">股市人</h1>
+            <p class="col-md-8 fs-4">這是一個股票推薦的網站。</p>
+            <a class="btn btn-primary btn-lg" href="/stock_data/accounts/profile/">註冊</a>
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header" style="background: #dee2e6; ">
+                    連結
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <a class="link-secondary" href="/stock_data/K">K線圖</a>
+                        <br />
+                        <a class="link-secondary" href="/stock_data/query">個股單日資料查詢</a>
+                        <br />
+
+                        <a class="link-secondary" href="/stock_data/focus">關注的股票</a>
+                        <br />
+                        <a href="market" class="link-secondary">公司類型查詢</a>
+                        <br />
+                        <a href="monthly" class="link-secondary">月報表</a>
+                        <br />
+                        <a href="/stock_data/rank" class="link-secondary">熱門排名</a>
+                        <br />
+
+                    </blockquote>
+                </div>
+
+            </div>
+            <br />
+            <div class="card">
+                <div class="card-header">
+                    預測
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <a href="/stock_data/predict" class="link-secondary">個股預測</a>
+                        <br />
+                        <a href="predict_rank" class="link-secondary">推薦股票</a>
+                        <br />
+                    </blockquote>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm">
+
+            <table class="table table-hover shadow-sm p-3 mb-5 bg-body rounded">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="3" class="table" style="background: #dee2e6; ">關注中的股票</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for data in data %}
+                    <tr>
+                        <td><a type="edit" href="{% url 'Ifo' data.stock_code %}">{{data.stock_code}}</a></td>
+                        <td></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td>註冊登入即可關注<br /><br /><br /><br /><br /><br /><br /><br /></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br />
+
+        </div>
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header" style="background: #dee2e6; ">
+                    {{ date }} 股票排名
+                </div>
+                
+                <div class="card-body">
+                    <ul id="myTab" class="nav nav-tabs">
+                        <li class="nav-item active">
+                            <a class="nav-link active" aria-current="page" href="#a" data-toggle="tab">成交股數</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#b" data-toggle="tab">成交筆數</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#c" data-toggle="tab">成交價</a>
+                        </li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade in active" id="a">
+                            <table class="table table-hover">
+
+                                <thead>
+                                    <tr>
+                                        <th>股票代號</th>
+                                        <th>股票名稱</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for rank1 in rank1 %}
+
+                                    <tr>
+                                        <td>{{ rank1.sNumber }}</td>
+                                        <td><a href="{% url 'Ifo' rank1.sNumber %}">{{rank1.sName}}</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="b">
+                            <table class="table table-hover">
+
+                                <thead>
+                                    <tr>
+                                        <th>股票代號</th>
+                                        <th>股票名稱</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for rank2 in rank2 %}
+
+                                    <tr>
+                                        <td>{{ rank2.sNumber }}</td>
+                                        <td><a href="{% url 'Ifo' rank2.sNumber %}">{{rank2.sName}}</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="c">
+                            <table class="table table-hover">
+
+                                <thead>
+                                    <tr>
+                                        <th>股票代號</th>
+                                        <th>股票名稱</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for rank3 in rank3 %}
+
+                                    <tr>
+                                        <td>{{ rank3.sNumber }}</td>
+                                        <td><a href="{% url 'Ifo' rank3.sNumber %}">{{rank3.sName}}</a></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<body>
+
+
+
+</body>
+{% endblock %}

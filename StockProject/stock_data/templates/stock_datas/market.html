@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %} 上市股票&上櫃股票 {% endblock %}
+{% block content%}
+
+
+<div class="container  ">
+    <div class="row">
+        <div class="col-sm">
+        </div>
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header">
+                    上市股票
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <a class="link-secondary" href="market/listed">公司資料</a>
+                        <br />
+                    </blockquote>
+                </div>
+            </div>
+            <br />
+            <div class="card">
+                <div class="card-header">
+                    上櫃股票
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <a href="market/otc" class="link-secondary">公司資料</a>
+                        <br />
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

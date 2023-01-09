@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %} 所有連結 {% endblock %}
+{% block content%}
+
+
+<div class="container  ">
+    <div class="row">
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header">
+                    連結
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <a class="link-secondary" href="/stock_data/K">K線圖</a>
+                        <br />
+                        <a class="link-secondary" href="/stock_data/query">個股單日資料查詢</a>
+                        <br />
+
+                        <a class="link-secondary" href="/stock_data/focus">關注的股票</a>
+                        <br />
+                        <a href="market" class="link-secondary">上市股票&上櫃股票</a>
+                        <br />
+                        <a href="monthly/0_0    " class="link-secondary">月報表</a>
+                        <br />
+                        <a href="/stock_data/rank" class="link-secondary">排名</a>
+                        <br />
+                        <a href="/stock_data/predict" class="link-secondary">個股預測</a>
+                        <br />
+                        <a href="predict_rank" class="link-secondary">推薦股票</a>
+                        <br />
+                    </blockquote>
+                </div>
+            </div>
+            <br />
+            <div class="card">
+                <div class="card-header">
+                    製作中
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <a class="link-info" href="#">用戶資料介面    </a>
+                        <br />
+
+                        <a href="monthly/0_0    " class="link-secondary">個股資料</a>
+                        <br />
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header">
+                    不會用到
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <a class="link-secondary" href="/stock_data/create">建立</a>
+                        <br />
+                        <a class="link-secondary" href="/stock_data/insert">加入</a>
+                        <br />
+                        <a class="link-secondary" href="/stock_data/search">查詢7日內資訊</a>
+                        <br />
+                    </blockquote>
+                </div>
+            </div>
+            <br />
+            <div class="card">
+                <div class="card-header">
+                    還沒製作
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <a href="#" class="link-danger">?</a>
+                        <br />
+                        <a href="#" class="link-danger">走勢圖</a>
+                        <br />
+
+                        <a href="#" class="link-danger">熱門股票</a>
+                        <br />
+                        
+
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="card">
+                <div class="card-header">
+                    後台
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <a class="link-secondary" href="/admin">admin</a>
+                    </blockquote>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

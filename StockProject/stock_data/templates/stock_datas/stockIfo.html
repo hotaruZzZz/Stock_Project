@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %} 股票資訊 {% endblock %}
+{% block content%}
+
+
+<div class="container  ">
+    <div class="row">
+
+        <div class="col-4">
+            <span class="card mx-3 my-3">
+                <h5 class="card-header list-group-header text-muted">股票資訊</h5>
+                {% for data in data %}
+                <ul class="selection list-group-flush">
+                    <li class="list-group-item"><b>code:</b> {{data.code}}</li>
+                    <li class="list-group-item"><b>name:</b>{{data.name}}</li>
+                    <li class="list-group-item"><b>type:</b>{{data.type}}</li>
+                    <li class="list-group-item"><b>ISIN:</b>{{data.ISIN}}</li>
+                    <li class="list-group-item"><b>market:</b>{{data.market}}</li>
+                    <li class="list-group-item"><b>group:</b>{{data.group}}</li>
+                </ul>
+                {% endfor %}
+            </span>
+            <ul>
+                <li><a href="{{ code }}/all_monthly">月報表</a></li>
+                <li><a href="/stock_data/query">個股單日資料查詢</a></li>
+            </ul>
+            
+          
+        </div>
+        <div class="col-8">
+            {% autoescape off %}
+            {{ plot_div }}
+            {% endautoescape %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

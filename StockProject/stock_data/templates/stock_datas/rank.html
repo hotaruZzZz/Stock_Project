@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %} 熱門排名 {% endblock %}
+{% block content%}
+
+
+<div class="container  ">
+    <form action="" method="POST">
+        {% csrf_token %}
+
+        <b>選擇日期: </b><input type="date" name="date" value="{{ date }}" />
+        <select name="rank">
+            <option value="-sTradeVolume">以成交股數排名</option>
+            <option value="-sTransaction">以成交筆數排名</option>
+            <option value="-sTradeValue">以成交價排名</option>
+         
+        </select>   
+        <select name="records">
+            <option value="10">前10筆</option>
+            <option value="20">前20筆</option>
+            <option value="30">前30筆</option>
+            <option value="40">前40筆</option>
+            <option value="50">前50筆</option>
+        </select>
+        <input type="submit" class="btn btn-success" value="確定">
+    </form>
+    <p></p>
+    <h5>{{ date }}</h5>
+    <table class="table table-hover">
+
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>股票名稱</th>
+                <th>股票代號</th>
+                <th>開盤價</th>
+                <th>最高價</th>
+                <th>最低價</th>
+                <th>收盤價</th>
+                <th>成交股數</th>
+                <th>成交筆數</th>
+                <th>成交金額</th>
+                <th>漲跌(+/-)</th>
+                <th>本益比</th>
+                <th>最後揭示買價</th>
+                <th>最後揭示買量</th>
+                <th>最後揭示賣價</th>
+                <th>最後揭示賣量</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in data %}
+
+            <tr>
+
+                <td>     </td>
+                <td>{{data.sName}} </td>
+                <td><a href="{% url 'Ifo' data.sNumber %}">{{ data.sNumber }}</a>  </td>
+                <td> {{ data.sOpen }} </td>
+                <td> {{ data.sHigh }} </td>
+                <td> {{ data.sLow }} </td>
+                <td> {{ data.sClose }} </td>
+                <td>  {{ data.sTradeVolume }}   </td>
+                <td>  {{ data.sTransaction }}   </td>
+                <td>  {{ data.sTradeValue }}   </td>
+                {% if  data.sDir  == "+" %}
+                <td style="color:darkred;">
+                    <b style="color:black;"> </b> ↑{{ data.sChange }}
+                </td>
+                {% else %}
+                <td style="color: forestgreen;">
+                    <b style="color:black;"> </b> ↓{{ data.sChange }}
+                </td>
+                {% endif %}
+                <td>  {{ data.sPE }}   </td>
+                <td>  {{ data.sLastBestBidPrice }}   </td>
+                <td>  {{ data.sLastBestBidVolume }}   </td>
+                <td>  {{ data.sLastBestAskPrice }}   </td>
+                <td>  {{ data.sLastBestAskVolume }}   </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

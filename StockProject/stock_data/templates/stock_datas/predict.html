@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %} 個股預測 {% endblock %}
+{% block content%}
+
+
+<div class="container  ">
+    <form action="" method="Post">
+        {% csrf_token %}
+        <input name="stock_number" placeholder="請輸入股票代號">
+        <input type="submit" class="btn btn-primary" value="查詢">
+    </form>
+    <h1></h1>
+    {% for name in name %}
+    <h3>{{ name.code }} {{ name.name }}</h3>
+    {% endfor %}
+    {% autoescape off %}
+    {{ plot_div }}
+    {% endautoescape %}
+
+    {% autoescape off %}
+    {{ result }}
+    {% endautoescape %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %} 股票資訊查詢 {% endblock %}
+{% block content%}
+
+
+<div class="container">
+    <div class="row align-items-end">
+        <div class="col"><span></span></div>
+        <div class="col">
+            <h2> 輸入股票代號查詢:</h2>
+            <form method='POST'>
+                {% csrf_token %}
+                <input name="stock_number" placeholder="請輸入股票代號">
+                <input type="submit" class="btn btn-primary" value="查詢">
+            </form>
+            <span class="card mx-3 my-3">
+                <h5 class="card-header list-group-header text-muted">股票資訊</h5>
+                {% for data in data %}
+                <ul class="selection list-group-flush">
+                    <li class="list-group-item"><b>code:</b> {{data.code}}</li>
+                    <li class="list-group-item"><b>name:</b>{{data.name}}</li>
+                    <li class="list-group-item"><b>type:</b>{{data.type}}</li>
+                    <li class="list-group-item"><b>ISIN:</b>{{data.ISIN}}</li>
+                    <li class="list-group-item"><b>market:</b>{{data.market}}</li>
+                    <li class="list-group-item"><b>group:</b>{{data.group}}</li>
+                </ulclass="selection>
+                {% endfor %}
+            </span>
+        </div>
+        <div class="col"><span></span></div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{% block title %} 單日資料查詢 {% endblock %}</h2>
+<form method='POST'>
+    {% csrf_token %}
+    股票代號：<input name="code" placeholder="請輸入股票代號" value="{{ code }}">
+
+    日期: <input type="date" name="sdate" value="{{ date }}">
+    <input type="submit" class="btn btn-primary" value="查詢" />
+    <p style="color:darkred;"></p>
+</form>
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <span class="card mx-3 my-3">
+                <h5 class="card-header list-group-header text-muted">股票資訊</h5>
+                {% for data in stock %}
+                <ul class="selection list-group-flush">
+                    <li class="list-group-item"><b>code:</b> {{data.code}}</li>
+                    <li class="list-group-item"><b>name:</b>{{data.name}}</li>
+                    <li class="list-group-item"><b>type:</b>{{data.type}}</li>
+                    <li class="list-group-item"><b>ISIN:</b>{{data.ISIN}}</li>
+                    <li class="list-group-item"><b>market:</b>{{data.market}}</li>
+                    <li class="list-group-item"><b>group:</b>{{data.group}}</li>
+                </ul>
+                {% empty %}
+                <p style="color:indianred;"> &emsp;查無資料</p>
+                {% endfor %}
+            </span>
+        </div>
+        <div class="col-8">
+            <table class="table table-hover">
+                {% for data in data %}
+
+                
+                <thead>
+                    <h3>{{ date }}</h3>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td>
+                            <b>開盤價: </b>
+                            {% if  data.sOpen  == -1 %}
+                            --
+                            {% else %}
+                            {{ data.sOpen }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <b>成交股數: </b>
+                            {% if  data.sTradeVolume  == -1 %}
+                            --
+                            {% else %}
+                            {{ data.sTradeVolume }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <b>最後揭示買價: </b>
+                            {% if  data.sLastBestBidPrice  == -1 %}
+                            --
+                            {% else %}
+                            {{ data.sLastBestBidPrice }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>最高價: </b>
+                            {% if  data.sHigh  == -1 %}
+                            --
+                            {% else %}
+                            {{ data.sHigh }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <b>成交筆數: </b>
+                            {% if  data.sTransaction  == -1 %}
+                            --
+                            {% else %}
+                            {{ data.sTransaction }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <b>最後揭示買量: </b>
+                            {% if  data.sLastBestBidVolume  == -1 %}
+                            --
+                            {% else %}
+                            {{ data.sLastBestBidVolume }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>最低價: </b>
+                            {% if  data.sLow  == -1 %}
+                            --
+                            {% else %}
+                            {{ data.sLow }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <b>成交金額: </b>
+                            {% if  data.sTransaction  == -1 %}
+                            --
+                            {% else %}
+                            {{ data.sTransaction }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <b>最後揭示賣價: </b>
+                            {% if  data.sLastBestAskPrice  == -1 %}
+                            --
+                            {% else %}
+                            {{ data.sLastBestAskPrice }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>收盤價: </b>
+                            {% if  data.sClose  == -1 %}
+                            --
+                            {% else %}
+                            {{ data.sClose }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <b>本益比: </b>
+                            {% if  data.sPE  == -1 %}
+                            --
+                            {% else %}
+                            {{ data.sPE }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <b>最後揭示賣量: </b>
+                            {% if  data.sLastBestAskVolume  == -1 %}
+                            --
+                            {% else %}
+                            {{ data.sLastBestAskVolume }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        {% if  data.sDir  == "+" %}
+                        <td style="color:darkred;">
+                            <b style="color:black;">漲跌: </b> ↑{{ data.sChange }}
+                        </td>
+                        {% else %}
+                        <td style="color: forestgreen;">
+                            <b style="color:black;">漲跌: </b> ↓{{ data.sChange }}
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% empty %}
+                    <h3 style="color:indianred;">查無資料</h3>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock  %}

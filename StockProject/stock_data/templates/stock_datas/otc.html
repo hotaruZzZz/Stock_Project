@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %} 上櫃股票 {% endblock %}
+{% block content%}
+
+
+<div class="container  ">
+    <div class="row align-items-center">
+        <p>上櫃股票</p>
+    </div>
+    <br />
+    <table class="table">
+        <thead>
+        <th>股票代號</th>
+        <th>股票名稱</th>
+        <th>類型</th>
+        <th>ISIN</th>
+        <th>group</th>
+        </thead>
+        <tbody>
+            {% for data in data %}
+            <tr>
+                <td>{{ data.code }}</td>
+                <td>{{ data.name}}</td>
+                <td>{{ data.type }}</td>
+                <td>{{ data.ISIN }}</td>
+                <td>{{ data.gropu }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+{% block title %} 查詢已加入股票資訊 {% endblock %}
+<script type="text/javascript">
+
+</script>
+<form action="" method="Post">
+    {% csrf_token %}
+    <input name="stock_number" placeholder="請輸入股票代號">
+    <input type="submit" class="btn btn-primary" value="查詢">
+</form>
+    {% for data in datas %}
+{{data.snumber}} {{data.sname}}
+    {% endfor %}
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>日期</th>
+            <th>Open</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Close</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in datas %}
+        <tr>
+            <td>{{data.day}} </td>
+            <td> {{ data.sopen }} </td>
+            <td> {{ data.shigh }} </td>
+            <td> {{ data.slow }} </td>
+            <td> {{ data.sclose }} </td>
+        </tr>   
+        <tr>
+            <td> {{ data.sopen }} </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock  %}
