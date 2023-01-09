@@ -1,0 +1,5 @@
+"insert into  stock_data_data value ( null, '" + sName + "', '" + sNumber + "', '" + sDate + "',"  + 
+sOpen + "," + sHigh + "," + sLow + "," + sClose + "," + sChange + ",'" + sDir + "'," + sLastBestAskPrice + "," + 
+sLastBestAskVolume + "," + sLastBestBidPrice + "," + sLastBestBidVolume + "," + sPE + "," + sTradeValue +
+"," + sTradeVolume + "," + sTransaction + ";")
+
