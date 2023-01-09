@@ -30,7 +30,7 @@ def predict(request):
           #發生錯誤時停止執行SQL
           db.rollback()
           print('error')
-        pred_0056 , train_0056 = studen_suggest.suggest_start(data, len(data) , 0)
+        first_data , first_add_data , pred_0056 , train_0056 = studen_suggest.suggest_start(data, len(data) , 0)
         print(pred_0056 )
         print( train_0056)
         code = request.POST.get("stock_number")
@@ -66,6 +66,6 @@ def predict(request):
         #關閉連線
         db.close()
         print("--------------------------start")
-        suggest , number1, number2, plotly_div, result = studen_suggest.suggest_start(data, len(data),1  , pred_0056, train_0056)
+        suggest , number1, number2, plotly_div, result = studen_suggest.suggest_start(data, len(data),1 , first_data , first_add_data , train_0056 , pred_0056)
         print("--------------------------end")
     return render(request, 'stock_datas/predict.html', context={'name':name,'plot_div': plotly_div, 'result':result})
