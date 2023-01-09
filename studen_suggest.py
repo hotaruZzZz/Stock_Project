@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import datetime
 import matplotlib.pyplot as plt
 
-def suggest_start(new_data , n_days , first_suggest = 0, first_date = 0, first_add_date = 0, first_train = 0, first_pred = 0):
+def suggest_start(new_data , n_days , first_suggest = 0 , first_date = 0, first_add_date = 0, first_train = 0, first_pred = 0):
 
     
     mean5_data = new_data["mean5"]
@@ -84,8 +84,8 @@ def suggest_start(new_data , n_days , first_suggest = 0, first_date = 0, first_a
     #print(studen_deep_linear.draw_plotly(np_time_data , X_X, np_time_data[30:] , pred, 30, axis = 0 , name = 'plotly'))
     #Y_pred[len(Y_pred)-n]+3
     if first_suggest == 1:
-        plotly_div_result = studen_deep_linear.draw_plotly(np_time_data , X_X, new_time_data, X_pred, first_pred, n, axis = 1 , name = '預測結果')
-        plotly_div = studen_deep_linear.draw_plotly(np_time_data , X_X, np_time_data[:len(np_time_data)-30] , pred, first_train, 30, axis = 0 , name = '訓練結果')
+        plotly_div_result = studen_deep_linear.draw_plotly(np_time_data , X_X, new_time_data, X_pred, first_add_date , first_pred, n, axis = 1 , name = '預測結果')
+        plotly_div = studen_deep_linear.draw_plotly(np_time_data , X_X, np_time_data[:len(np_time_data)-30], pred , first_date , first_train, 30, axis = 0 , name = '訓練結果')
     
     
     if X_pred[len(X_pred)-1] <= X_X[len(X_X)-1]:
@@ -100,7 +100,7 @@ def suggest_start(new_data , n_days , first_suggest = 0, first_date = 0, first_a
             number_2 = X_X[len(X_X)-1]
             return suggest , number_1 , number_2, plotly_div, plotly_div_result
         else:
-            return new_time_date , np_time_data , X_pred , pred
+            return new_time_data , np_time_data[30:] , X_pred , pred
     
       
 if __name__ == "__main__":
