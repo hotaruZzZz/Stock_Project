@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import datetime
 import matplotlib.pyplot as plt
 
-def suggest_start(new_data , n_days , first_suggest = 0, first_train = 0, first_pred = 0):
+def suggest_start(new_data , n_days , first_suggest = 0, first_date = 0, first_add_date = 0, first_train = 0, first_pred = 0):
 
     
     mean5_data = new_data["mean5"]
